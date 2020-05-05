@@ -56,7 +56,61 @@ var UserSchema = new _mongoose["default"].Schema({
   date: {
     type: Date,
     "default": Date.now
-  }
+  },
+  fitnesses: [{
+    workout: {
+      type: String,
+      required: "Workout is required to be entered."
+    },
+    weight: {
+      type: Number,
+      "default": 0
+    },
+    sets: {
+      type: Number,
+      "default": 0
+    },
+    reps: {
+      type: Number,
+      "default": 0
+    },
+    time: {
+      type: Number,
+      "default": 0
+    },
+    day: {
+      type: Number,
+      required: "Day is required."
+    }
+  }],
+  foods: [{
+    item: {
+      type: String,
+      required: "Item is required to be entered."
+    },
+    calories: {
+      type: Number,
+      required: "Calories is required to be entered."
+    },
+    day: {
+      type: Number,
+      required: "Day is required."
+    }
+  }],
+  monies: [{
+    item: {
+      type: String,
+      required: "Item is required to be entered."
+    },
+    price: {
+      type: Number,
+      required: "Price is required to be entered."
+    },
+    day: {
+      type: Number,
+      required: "Day is required."
+    }
+  }]
 }, {
   strict: false
 });
