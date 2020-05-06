@@ -28,6 +28,8 @@ var passport = require("./passport/setup");
 
 var auth = require("./routes/auth");
 
+var path = require("path");
+
 //import usersRouter from './routes/users';
 _dotenv["default"].config();
 
@@ -69,6 +71,6 @@ app.use(passport.session()); // Routes
 
 app.use("/api/auth", auth);
 app.get("/", function (req, res) {
-  return res.send("Good monring sunshine!");
+  return res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 module.exports = app;

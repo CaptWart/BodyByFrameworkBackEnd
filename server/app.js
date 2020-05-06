@@ -11,7 +11,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const passport = require("./passport/setup");
 const auth = require("./routes/auth");
-
+var path = require("path");
 
 import indexRouter from './routes/index';
 //import usersRouter from './routes/users';
@@ -54,6 +54,6 @@ app.use(passport.session());
 
 // Routes
 app.use("/api/auth", auth);
-app.get("/", (req, res) => res.send("Good monring sunshine!"));
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "/public/index.html")));
 
 module.exports = app;
