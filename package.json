@@ -1,53 +1,34 @@
 {
-  "name": "body-by-framework-back-end",
+  "name": "bodybyframeworkbackend",
   "version": "1.0.0",
-  "private": true,
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon",
-    "build": "npm-run-all clean transpile",
-    "server": "node ./dist/bin/www",
-    "dev": "cross-env NODE_ENV=development npm-run-all build server",
-    "prod": "cross-env NODE_ENV=production npm-run-all build server",
-    "transpile": "babel ./server --out-dir dist --copy-files",
-    "clean": "rimraf dist"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "nodemonConfig": {
-    "exec": "npm run dev",
-    "watch": [
-      "server/*",
-      "public/*"
-    ],
-    "ignore": [
-      "**/__tests__/**",
-      "*.test.js",
-      "*.spec.js"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaptWart/BodyByFrameworkBackEnd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CaptWart/BodyByFrameworkBackEnd/issues"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "compression": "^1.7.4",
-    "connect-mongo": "^3.2.0",
-    "cookie-parser": "^1.4.4",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "cross-env": "^7.0.2",
-    "debug": "~2.6.9",
-    "dotenv": "^8.2.0",
-    "express": "~4.16.1",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "express-jwt": "^5.3.3",
     "express-session": "^1.17.1",
-    "helmet": "^3.22.0",
-    "mongoose": "^5.9.11",
-    "morgan": "^1.9.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.13",
+    "morgan": "^1.10.0",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7"
   },
-  "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-env": "^7.9.0",
-    "jest": "^25.2.7",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2",
-    "nodemon": "^2.0.3"
-  }
+  "homepage": "https://github.com/CaptWart/BodyByFrameworkBackEnd#readme"
 }
