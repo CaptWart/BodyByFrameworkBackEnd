@@ -6,6 +6,13 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
 const passport = require('passport');
+
+const apiUsersRouter = require("./routes/api/users");
+const apiPlansRouter = require("./routes/api/plans");
+const apiDaysRouter = require("./routes/api/days");
+const apiFitnessesRouter = require("./routes/api/fitnesses");
+const apiFoodsRouter = require("./routes/api/foods");
+
 //Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
 
@@ -40,6 +47,11 @@ mongoose.Promise = global.Promise;
 require('./models/Users');
 app.use(require('./middleware'));
 app.use(require('./routes/users'));
+app.use('/api/users', apiUsersRouter);
+app.use("/api/plans", apiPlansRouter);
+app.use("/api/days", apiDaysRouter);
+app.use("/api/fitnesses", apiFitnessesRouter);
+app.use("/api/foods", apiFoodsRouter);
 
 app.use(passport.initialize());
 app.use(passport.session());
