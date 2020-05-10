@@ -18,6 +18,7 @@ var corsOptions = {
 
 
 router.post('/createUser',  (req, res, next) => {
+  const result = res
   const user = req.body;
   console.log(req.body)
   if(!user.email) {
@@ -36,12 +37,19 @@ router.post('/createUser',  (req, res, next) => {
     });
   }
 
-  const finalUser = new Users(user);
+  Users.findOne({"email": req.body.email}).then(res => {
+    console.log(!res)
+    if(res){
+      return console.log("Email already exist")
+    }
+    else{
+      const finalUser = new Users(user);
+      finalUser.isValidPassword(user.password);
+      return finalUser.save()
+      .then(() => result.json({ user: finalUser.toAuthJSON() }));
+    }
+  })
 
-  finalUser.isValidPassword(user.password);
-
-  return finalUser.save()
-    .then(() => res.json({ user: finalUser.toAuthJSON() }));
 });
 
 //POST login route (optional, everyone has access)
@@ -65,17 +73,15 @@ router.post('/login', cors(corsOptions), (req, res, next) => {
 
   return passport.authenticate('login', { session: true }, (err, passportUser, info) => {
     if(err) {
-      console.log("bad login")
-      return next(err);
+      //console.log(err)
+      //res.json("bad login")
+      return res.sendStatus(401);
     }
 
     if(passportUser) {
       let user = passportUser;
       const token = passportUser.generateJWT();
-      console.log(token)
       return res.cookie('token', token, { httpOnly: true, secure: false }).sendStatus(200);
-
-      //return res.json({ user: user.toAuthJSON() });
     }
 
     return status(400).info;
@@ -84,23 +90,19 @@ router.post('/login', cors(corsOptions), (req, res, next) => {
 
 //GET current route (required, only authenticated users have access)
 router.get('/current', auth, (req, res, next) => {
-  //const { payload: { id } } = req;
-  //console.log(req.id)
-  return Users.findById(req.id)
+  return Users.findOne({"_id" : req.id})
     .then((user) => {
       if(!user) {
         return res.sendStatus(400);
       }
         const payload = user.toAuthJSON()
-        console.log("payload ", payload)
       return res.send(payload);
     });
 });
 
 router.get('/logout', (req, res, next) => {
-  console.log("hi")
   res.clearCookie('token');
-  res.send("hi")
+  res.redirect("/login")
 })
 
 module.exports = router;

@@ -10,9 +10,21 @@ const UsersSchema = new Schema({
     required : true,
     unique : true
   },
+  nickname : {
+    type : String,
+    required : true
+  },
   password : {
     type : String,
     required : true
+  },
+  ageCheck : {
+    type: Boolean,
+    default : false
+  },
+  policyCheck : {
+    type: Boolean,
+    default : false
   }
 });
 
@@ -41,7 +53,6 @@ UsersSchema.methods.generateJWT = function() {
   const today = new Date();
   const expirationDate = new Date(today);
   expirationDate.setDate(today.getDate() + 60);
-  console.log(this)
   return jwt.sign({id: this._id, email: this.email}, secret, {
     expiresIn: '1800s'
 
