@@ -25,7 +25,22 @@ const UsersSchema = new Schema({
   policyCheck : {
     type: Boolean,
     default : false
-  }
+  },
+  plans: [
+    {
+        type: Schema.Types.ObjectId,
+        ref: "Plan"
+    } 
+  ]
+});
+
+// Not working...
+UsersSchema.pre("findOneAndDelete", function(next) {
+  Plan.deleteMany({userID: this._id}).exec();
+  Day.deleteMany({userID: this._id}).exec();
+  Fitness.deleteMany({userID: this._id}).exec();
+  Food.deleteMany({userID: this._id}).exec();
+  next();
 });
 
 UsersSchema.pre('save', async function(next){
