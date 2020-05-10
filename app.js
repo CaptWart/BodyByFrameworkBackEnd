@@ -15,6 +15,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 //Initiate our app
 const app = express();
 
+app.disable('etag');
+
 //Configure our app
 //app.use(cors());
 app.use(require('morgan')('dev'));
