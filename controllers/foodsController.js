@@ -1,4 +1,3 @@
-// import { Day, Food } from '../models';
 const Models = require("../models/index");
 const Day = Models.Day;
 const Food = Models.Food;
@@ -9,7 +8,24 @@ const foodsController = {
     Food
       .find(
         {
-          planID: req.body.planID
+          // planID: req.body.planID
+          planID: req.query.planID
+        }
+      )
+      .then(dbFoods => {
+        res.json(dbFoods);
+      })
+      .catch(err => {
+        res.json(err);
+      })
+  },
+
+  /* Get all foods of a single plan by day. */
+  getAllFoodsByDay: (req, res) => {
+    Food
+      .find(
+        {
+          dayID: req.query.dayID
         }
       )
       .then(dbFoods => {
@@ -89,5 +105,4 @@ const foodsController = {
   }
 };
 
-// export default foodsController;
 module.exports = foodsController;

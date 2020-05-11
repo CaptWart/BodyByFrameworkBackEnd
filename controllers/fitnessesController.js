@@ -1,4 +1,3 @@
-// import { Day, Fitness } from '../models';
 const Models = require("../models/index");
 const Day = Models.Day;
 const Fitness = Models.Fitness;
@@ -9,7 +8,24 @@ const fitnessesController = {
     Fitness
       .find(
         {
-          planID: req.body.planID
+          // planID: req.body.planID
+          planID: req.query.planID
+        }
+      )
+      .then(dbFitnesses => {
+        res.json(dbFitnesses);
+      })
+      .catch(err => {
+        res.json(err);
+      })
+  },
+
+  /* Get all fitnesses of a single plan by day. */
+  getAllFitnessesByDay: (req, res) => {
+    Fitness
+      .find(
+        {
+          dayID: req.query.dayID
         }
       )
       .then(dbFitnesses => {
@@ -91,5 +107,4 @@ const fitnessesController = {
   }
 };
 
-// export default fitnessesController;
 module.exports = fitnessesController;

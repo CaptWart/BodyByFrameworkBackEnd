@@ -1,4 +1,3 @@
-// import { User, Plan } from '../models';
 const Models = require("../models/index");
 const UserModel = Models.UserModel;
 const Plan = Models.Plan;
@@ -9,7 +8,7 @@ const plansController = {
     Plan
       .find(
         {
-          userID: req.body.userID
+          userID: req.query.userID
         }
       )
       .populate("days")
@@ -99,7 +98,7 @@ const plansController = {
     )
     .then(() => {
       //const planID = _id;
-      console.log(id)
+      // console.log(id)
       UserModel
       .findOneAndUpdate( {plans: { $in: id} },
       { $pull: { plans: id}}, function(err, data){
@@ -112,5 +111,4 @@ const plansController = {
   }
 };
 
-// export default plansController;
 module.exports = plansController;
