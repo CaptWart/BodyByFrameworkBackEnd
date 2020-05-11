@@ -39,9 +39,10 @@ if(!isProduction) {
 }
 
 //Configure Mongoose
-mongoose.connect('mongodb://127.0.0.1:27017/passport-jwt', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://127.0.0.1:27017/passport-jwt', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.on('error', error => console.log(error) );
 mongoose.Promise = global.Promise;
+
 
 //Models & routes
 require('./models/Users');

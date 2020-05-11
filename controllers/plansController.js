@@ -92,29 +92,20 @@ const plansController = {
 
   /* Delete a plan(name). */
   deletePlan: (req, res) => {
+    const id = req.params.id;
     Plan
     .findOneAndDelete(
-      { _id: req.params.id }
+      { _id: id }
     )
-    .then(({ _id }) => {
-      const planID = _id;
-      UserModel // Not working...
-        .find({ plans: { $in: [planID] } })
-        .then((users) => {
-          Promise.all(
-            users.map(user =>
-              User.findOneAndUpdate(
-                user._id,
-                { $pull: { plans: planID } },
-                { new: true }
-              )
-            )
-          )
-        });
+    .then(() => {
+      //const planID = _id;
+      console.log(id)
+      UserModel
+      .findOneAndUpdate( {plans: { $in: id} },
+      { $pull: { plans: id}}, function(err, data){
+        res.json(data)
+      }) 
       })
-    .then(dbPlan => {
-      res.json(dbPlan);
-    })
     .catch(err => {
       res.json(err);
     })
