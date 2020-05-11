@@ -1,5 +1,3 @@
-// import { Plan, Day } from "../models";
-// const Plan = require("../models/Plan");
 const Models = require("../models/index");
 const Plan = Models.Plan;
 const Day = Models.Day;
@@ -10,7 +8,7 @@ const daysController = {
     Day
       .find(
         {
-          planID: req.body.planID
+          planID: req.query.planID
         }
       )
       .then(dbDays => {
@@ -74,5 +72,4 @@ const daysController = {
   }
 };
 
-// export default daysController;
 module.exports = daysController;

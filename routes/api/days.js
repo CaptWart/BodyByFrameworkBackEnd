@@ -1,6 +1,3 @@
-// import express from 'express';
-// const router = express.Router();
-// import daysController from "../../controllers/daysController";
 const express = require("express");
 const router = express.Router();
 const daysController = require("../../controllers/daysController");
@@ -14,5 +11,4 @@ router.post("/", daysController.createDay);
 /* DELETE a day. Matches with "/api/day/:id" */
 router.delete("/:id", daysController.deleteDay);
 
-// export default router;
 module.exports = router;

@@ -20,7 +20,7 @@ var corsOptions = {
 router.post('/createUser',  (req, res, next) => {
   const result = res
   const user = req.body;
-  console.log(req.body)
+  // console.log(req.body)
   if(!user.email) {
     return res.status(422).json({
       errors: {
