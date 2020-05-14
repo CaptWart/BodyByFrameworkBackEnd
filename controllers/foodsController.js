@@ -92,12 +92,17 @@ const foodsController = {
 
   /* Delete a food. */
   deleteFood: (req, res) => {
+    const id = req.params.id;
     Food
     .findOneAndDelete(
-      { _id: req.params.id }
+      { _id: id }
     )
-    .then(dbFood => {
-      res.json(dbFood);
+    .then(() => {
+      Day
+      .findOneAndUpdate( {foods: { $in: id} },
+      { $pull: { foods: id}}, function(err, data){
+        res.json(data)
+      }) 
     })
     .catch(err => {
       res.json(err);

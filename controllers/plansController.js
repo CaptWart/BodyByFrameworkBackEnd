@@ -97,14 +97,12 @@ const plansController = {
       { _id: id }
     )
     .then(() => {
-      //const planID = _id;
-      // console.log(id)
       UserModel
       .findOneAndUpdate( {plans: { $in: id} },
       { $pull: { plans: id}}, function(err, data){
         res.json(data)
       }) 
-      })
+    })
     .catch(err => {
       res.json(err);
     })

@@ -94,12 +94,17 @@ const fitnessesController = {
 
   /* Delete a fitness. */
   deleteFitness: (req, res) => {
+    const id = req.params.id;
     Fitness
     .findOneAndDelete(
-      { _id: req.params.id }
+      { _id: id }
     )
-    .then(dbFitness => {
-      res.json(dbFitness);
+    .then(() => {
+      Day
+      .findOneAndUpdate( {fitnesses: { $in: id} },
+      { $pull: { fitnesses: id}}, function(err, data){
+        res.json(data)
+      }) 
     })
     .catch(err => {
       res.json(err);

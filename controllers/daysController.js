@@ -59,12 +59,17 @@ const daysController = {
 
   /* Delete a day. */
   deleteDay: (req, res) => {
+    const id = req.params.id;
     Day
     .findOneAndDelete(
-      { _id: req.params.id }
+      { _id: id }
     )
-    .then(dbDay => {
-      res.json(dbDay);
+    .then(() => {
+      Plan
+      .findOneAndUpdate( {days: { $in: id} },
+      { $pull: { days: id}}, function(err, data){
+        res.json(data)
+      }) 
     })
     .catch(err => {
       res.json(err);
