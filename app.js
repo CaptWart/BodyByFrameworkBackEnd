@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
 const passport = require('passport');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const apiUsersRouter = require("./routes/api/users");
 const apiPlansRouter = require("./routes/api/plans");
 const apiDaysRouter = require("./routes/api/days");
@@ -30,7 +33,7 @@ app.use(require('morgan')('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'secret', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+app.use(session({ secret: process.env.jwtsecret, cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
