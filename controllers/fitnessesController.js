@@ -8,7 +8,6 @@ const fitnessesController = {
     Fitness
       .find(
         {
-          // planID: req.body.planID
           planID: req.query.planID
         }
       )
@@ -79,10 +78,12 @@ const fitnessesController = {
 
   /* Update(PUT) a fitness. */
   updateFitness: (req, res) => {
+    opts = { runValidators: true };
     Fitness
     .findOneAndUpdate(
       { _id: req.params.id }, 
-      req.body
+      req.body,
+      ops
     )
     .then(dbFitness => {
       res.json(dbFitness);

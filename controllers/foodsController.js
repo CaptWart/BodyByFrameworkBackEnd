@@ -8,7 +8,6 @@ const foodsController = {
     Food
       .find(
         {
-          // planID: req.body.planID
           planID: req.query.planID
         }
       )
@@ -77,10 +76,12 @@ const foodsController = {
 
   /* Update(PUT) a food. */
   updateFood: (req, res) => {
+    opts = { runValidators: true };
     Food
     .findOneAndUpdate(
       { _id: req.params.id }, 
-      req.body
+      req.body,
+      opts
     )
     .then(dbFood => {
       res.json(dbFood);

@@ -33,6 +33,29 @@ const daysController = {
       })
   },
 
+  /* Get the last day (max day) of the plan */
+  getLastDay: (req, res) => {
+    console.log("get last day!!");
+    Day
+      .find(
+        {
+          planID: req.query.planID
+        }
+      )
+      .select("day")
+      .sort("-day")
+      .exec((err, doc) => {
+        let last_day = doc[0].day;
+      })
+      .then(dbDays => {
+        // res.json(dbDays);
+        res.json(last_day);
+      })
+      .catch(err => {
+        res.json(err);
+      })
+  },
+
   /* Create(POST) a Day. */
   createDay: (req, res) => {
     const {day, userID, planID} = req.body;
