@@ -4,9 +4,24 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 const Users = mongoose.model('Users');
 require('../middleware/passport')
+
+const bcrypt = require('bcryptjs');
+
 //POST new user route (optional, everyone has access)
 
-const secret = 'secret';
+
+
+const nodemailer = require("nodemailer");
+
+const smtpTransport = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.sendEmail,
+      pass: process.env.sendPassword
+    }
+  });
+//   var rand,mailOptions,host,link;
+
 
 var express = require('express')
 var cors = require('cors')
@@ -20,7 +35,6 @@ var corsOptions = {
 router.post('/createUser',  (req, res, next) => {
   const result = res
   const user = req.body;
-  // console.log(req.body)
   if(!user.email) {
     return res.status(422).json({
       errors: {
@@ -38,15 +52,15 @@ router.post('/createUser',  (req, res, next) => {
   }
 
   Users.findOne({"email": req.body.email}).then(res => {
-    console.log(!res)
+    console.log(res)
     if(res){
-      return console.log("Email already exist")
+      return result.sendStatus(400)
     }
     else{
       const finalUser = new Users(user);
       finalUser.isValidPassword(user.password);
       return finalUser.save()
-      .then(() => result.json({ user: finalUser.toAuthJSON() }));
+      .then(() => result.json({ user: finalUser.toAuthJSON(), user: finalUser.verifyEmail() }));
     }
   })
 
@@ -73,13 +87,10 @@ router.post('/login', cors(corsOptions), (req, res, next) => {
 
   return passport.authenticate('login', { session: true }, (err, passportUser, info) => {
     if(err) {
-      //console.log(err)
-      //res.json("bad login")
       return res.sendStatus(401);
     }
 
     if(passportUser) {
-      let user = passportUser;
       const token = passportUser.generateJWT();
       return res.cookie('token', token, { httpOnly: true, secure: false }).sendStatus(200);
     }
@@ -90,10 +101,19 @@ router.post('/login', cors(corsOptions), (req, res, next) => {
 
 //GET current route (required, only authenticated users have access)
 router.get('/current', auth, (req, res, next) => {
+  const status = res;
+  if(!req.id){
+    return res.send("no id")
+  }
   return Users.findOne({"_id" : req.id})
     .then((user) => {
       if(!user) {
         return res.sendStatus(400);
+      }
+      console.log(user.validEmail)
+      if(!user.validEmail){
+        user.verifyEmail()
+        return status.sendStatus(403)
       }
         const payload = user.toAuthJSON()
       return res.send(payload);
@@ -103,6 +123,86 @@ router.get('/current', auth, (req, res, next) => {
 router.get('/logout', (req, res, next) => {
   res.clearCookie('token');
   res.redirect("/login")
+})
+
+//find user by id then set verify email to true
+router.get('/verifyEmail', (req, res, next) => {
+  const status = res;
+  return Users.findOneAndUpdate({ _id: req.query.id }, 
+    {$set : {validEmail: true}}, function(err, data){
+      status.sendStatus(200)
+    })
+})
+
+// router.get('/send', (req, res, next) => {
+//     host=req.get('host');
+//     link="http://"+req.get('host')+"/verify?id="+rand;
+//     mailOptions={
+//         to : req.query.email,
+//         subject : "Please confirm your Email account",
+//         html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+//     }
+//     console.log(mailOptions);
+//     smtpTransport.sendMail(mailOptions, function(error, response){
+//      if(error){
+//             console.log(error);
+//         res.end("error");
+//      }else{
+//             console.log("Message sent: " + response.message);
+//         res.end("sent");
+//          }
+//   })
+// });
+
+// //encrypt token from email and send password link with token in header
+router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
+  const userEmail = req.body.email;
+  Users.findOne({email: userEmail})
+  .then(user => {
+    if(!user){
+      console.log("no user")
+    }
+    else {
+      const token = user.passwordReset()
+      console.log(token)
+      link="http://localhost:3000/forgotpasswordChange?token="+token;
+      mailOptions={
+          to : userEmail,
+          subject : "Body By Framework Password Reset",
+          html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to reset</a>"
+      }
+      console.log(mailOptions);
+      smtpTransport.sendMail(mailOptions, function(error, response){
+       if(error){
+              console.log(error);
+          res.end("error");
+       }else{
+              console.log("Message sent: " + response.message);
+          res.end("sent");
+           }
+       })
+
+      return res.sendStatus(200)
+    }
+  })
+})
+
+router.get('/passwordReset', auth, (req, res, next) => {
+  res.json("success")
+})
+
+router.post('/passwordReset', auth, async (req, res, next) => {
+  const hash =  await bcrypt.hash(req.body.password, 10);
+  return Users.findOneAndUpdate({_id: req.id}, {$set : {password: hash}}, function(err, data){
+    res.sendStatus(200)
+  })
+})
+
+router.post('/changePassword', auth, async (req, res, next) => {
+  const hash =  await bcrypt.hash(req.body.password, 10);
+  return Users.findOneAndUpdate({_id: req.id}, {$set : {password: hash}}, function(err, data){
+  })
+
 })
 
 module.exports = router;
