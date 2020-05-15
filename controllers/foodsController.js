@@ -8,7 +8,6 @@ const foodsController = {
     Food
       .find(
         {
-          // planID: req.body.planID
           planID: req.query.planID
         }
       )
@@ -77,10 +76,12 @@ const foodsController = {
 
   /* Update(PUT) a food. */
   updateFood: (req, res) => {
+    opts = { runValidators: true };
     Food
     .findOneAndUpdate(
       { _id: req.params.id }, 
-      req.body
+      req.body,
+      opts
     )
     .then(dbFood => {
       res.json(dbFood);
@@ -92,12 +93,17 @@ const foodsController = {
 
   /* Delete a food. */
   deleteFood: (req, res) => {
+    const id = req.params.id;
     Food
     .findOneAndDelete(
-      { _id: req.params.id }
+      { _id: id }
     )
-    .then(dbFood => {
-      res.json(dbFood);
+    .then(() => {
+      Day
+      .findOneAndUpdate( {foods: { $in: id} },
+      { $pull: { foods: id}}, function(err, data){
+        res.json(data)
+      }) 
     })
     .catch(err => {
       res.json(err);
