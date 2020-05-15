@@ -167,7 +167,7 @@ router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
       console.log(token)
       link="http://localhost:3000/forgotpasswordChange?token="+token;
       mailOptions={
-          to : "chaud@outlook.com",
+          to : userEmail,
           subject : "Body By Framework Password Reset",
           html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to reset</a>"
       }

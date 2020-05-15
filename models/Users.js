@@ -111,7 +111,7 @@ UsersSchema.methods.verifyEmail = function(){
   console.log("this: " + this._id)
   link="http://localhost:3000/verified?id="+this._id;
   mailOptions={
-      to : "chaud@outlook.com",
+      to : this.email,
       subject : "Please confirm your Email account",
       html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
   }
