@@ -22,34 +22,14 @@ const daysController = {
   /* Get a single day. */
   getDay: (req, res) => {
     Day
-      .findById(req.params.id)
+      // .findById(req.params.id)
+      .findOne({
+        _id: req.query._id
+      })
       .populate("fitnesses")
       .populate("foods")
       .then(dbDay => {
         res.json(dbDay);
-      })
-      .catch(err => {
-        res.json(err);
-      })
-  },
-
-  /* Get the last day (max day) of the plan */
-  getLastDay: (req, res) => {
-    console.log("get last day!!");
-    Day
-      .find(
-        {
-          planID: req.query.planID
-        }
-      )
-      .select("day")
-      .sort("-day")
-      .exec((err, doc) => {
-        let last_day = doc[0].day;
-      })
-      .then(dbDays => {
-        // res.json(dbDays);
-        res.json(last_day);
       })
       .catch(err => {
         res.json(err);
@@ -97,7 +77,27 @@ const daysController = {
     .catch(err => {
       res.json(err);
     })
-  }
+  },
+
+  /* Get the last day (max day) of the plan */
+  getLastDay: (req, res) => {
+    console.log("get last day!!");
+    Day
+      .find(
+        {
+          planID: req.query.planID
+        }
+      )
+      .select("day")
+      .sort("-day")
+      .limit(1)
+      .then(dbDays => {
+        res.json(dbDays);
+      })
+      .catch(err => {
+        res.json(err);
+      })
+  },
 };
 
 module.exports = daysController;
