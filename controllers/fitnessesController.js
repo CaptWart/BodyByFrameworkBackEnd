@@ -78,12 +78,12 @@ const fitnessesController = {
 
   /* Update(PUT) a fitness. */
   updateFitness: (req, res) => {
-    opts = { runValidators: true };
+    const opts = { runValidators: true };
     Fitness
     .findOneAndUpdate(
       { _id: req.params.id }, 
       req.body,
-      ops
+      opts
     )
     .then(dbFitness => {
       res.json(dbFitness);
