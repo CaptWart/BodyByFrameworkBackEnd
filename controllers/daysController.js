@@ -22,7 +22,6 @@ const daysController = {
   /* Get a single day. */
   getDay: (req, res) => {
     Day
-      // .findById(req.params.id)
       .findOne({
         _id: req.query._id
       })
@@ -81,7 +80,6 @@ const daysController = {
 
   /* Get the last day (max day) of the plan */
   getLastDay: (req, res) => {
-    console.log("get last day!!");
     Day
       .find(
         {
