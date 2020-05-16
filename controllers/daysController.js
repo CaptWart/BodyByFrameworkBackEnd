@@ -91,12 +91,8 @@ const daysController = {
       .select("day")
       .sort("-day")
       .limit(1)
-      // .exec((err, doc) => {
-      //   let last_day = doc[0].day;
-      // })
       .then(dbDays => {
         res.json(dbDays);
-        // res.json(last_day);
       })
       .catch(err => {
         res.json(err);
