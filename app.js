@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: process.env.jwtsecret, cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
-app.use(cors({credentials: true, origin: process.env.backendtest}));
+app.use(cors({credentials: true, origin: process.env.frontendtest}));
 
 if(!isProduction) {
   app.use(errorHandler());
