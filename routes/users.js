@@ -28,7 +28,7 @@ var express = require('express')
 var cors = require('cors')
 var app = express()
 var corsOptions = {
-  origin: process.env.backendTest,
+  origin: process.env.backendtest,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -166,7 +166,7 @@ router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
     else {
       const token = user.passwordReset()
       console.log(token)
-      link=process.env.backendTest+"/forgotpasswordChange?token="+token;
+      link=process.env.backendtest+"/forgotpasswordChange?token="+token;
       mailOptions={
           to : userEmail,
           subject : "Body By Framework Password Reset",
