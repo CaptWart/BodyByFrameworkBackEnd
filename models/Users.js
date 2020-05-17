@@ -109,7 +109,7 @@ UsersSchema.methods.toAuthJSON = function() {
 UsersSchema.methods.verifyEmail = function(){
 
   console.log("this: " + this._id)
-  const link=process.env.backendtest+"/verified?id="+this._id;
+  const link=process.env.frontendtest+"/verified?id="+this._id;
   mailOptions={
       to : this.email,
       subject : "Please confirm your Email account",
