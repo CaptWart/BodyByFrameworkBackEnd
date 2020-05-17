@@ -8,7 +8,8 @@ require('../middleware/passport')
 const bcrypt = require('bcryptjs');
 
 //POST new user route (optional, everyone has access)
-
+var dotenv = require('dotenv');
+dotenv.config();
 
 
 const nodemailer = require("nodemailer");
@@ -27,7 +28,7 @@ var express = require('express')
 var cors = require('cors')
 var app = express()
 var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.backendTest,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
@@ -165,7 +166,7 @@ router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
     else {
       const token = user.passwordReset()
       console.log(token)
-      link="http://localhost:3000/forgotpasswordChange?token="+token;
+      link=process.env.backendTest+"/forgotpasswordChange?token="+token;
       mailOptions={
           to : userEmail,
           subject : "Body By Framework Password Reset",

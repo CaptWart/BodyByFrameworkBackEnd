@@ -35,14 +35,14 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: process.env.jwtsecret, cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: process.env.backendtest}));
 
 if(!isProduction) {
   app.use(errorHandler());
 }
 
 //Configure Mongoose
-mongoose.connect('mongodb://127.0.0.1:27017/passport-jwt', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect('mongodb+srv://bbftest:OiOzr6s6RYDqvGdQ@bbf-test-rmvkm.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.on('error', error => console.log(error) );
 mongoose.Promise = global.Promise;
 

@@ -8,13 +8,13 @@ const auth = function(req, res, next) {
   const cookieHead = req.headers.cookie;
   const cookie = req.query.token;
   let token = "";
-  if(cookie){
-    token = cookie;
-  }
-
   if(cookieHead){
     token = cookieHead.substring(6,cookieHead.length);
   }
+  else{
+    token = cookie;
+  }
+
 
   if (!token) {
     res.status(401).send('Unauthorized: No token provided');
