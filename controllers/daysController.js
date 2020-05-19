@@ -1,6 +1,8 @@
 const Models = require("../models/index");
 const Plan = Models.Plan;
 const Day = Models.Day;
+const Fitness = Models.Fitness;
+const Food = Models.Food;
 
 const daysController = {
   /* Get all Days of a single user. */
@@ -71,7 +73,15 @@ const daysController = {
       .findOneAndUpdate( {days: { $in: id} },
       { $pull: { days: id}}, function(err, data){
         res.json(data)
-      }) 
+      });
+      // Fitness
+      // .deleteMany({dayID: id});
+      // Food
+      // .deleteMany({dayID: id});
+      Fitness
+      .remove({dayID: id});
+      Food
+      .remove({dayID: id});
     })
     .catch(err => {
       res.json(err);

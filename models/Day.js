@@ -1,5 +1,7 @@
 // import mongoose from 'mongoose';
 const mongoose = require("mongoose");
+const Fitness = require("./Fitness");
+const Food = require("./Food");
 
 const Schema = mongoose.Schema;
 
@@ -31,6 +33,13 @@ const DaySchema = new Schema(
     }
   }
 );
+
+// Not working...
+// DaySchema.pre("findOneAndDelete", function(next) {
+//   Fitness.deleteMany({dayID: this._id});
+//   Food.deleteMany({dayID: this._id}).exec();
+//   next();
+// });
 
 const Day = mongoose.model("Day", DaySchema);
 
