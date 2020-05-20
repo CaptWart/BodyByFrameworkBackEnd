@@ -1,4 +1,3 @@
-// import mongoose from "mongoose";
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
@@ -9,6 +8,7 @@ const FitnessSchema = new Schema(
       type: String,
       required: "Workout is required to be entered."
     },
+    // add type: strength or activity
     weight: {
       type: Number,
       default: 0
@@ -42,5 +42,4 @@ const FitnessSchema = new Schema(
 
 const Fitness = mongoose.model("Fitness", FitnessSchema);
 
-// export default Fitness;
 module.exports = Fitness;

@@ -62,30 +62,20 @@ const daysController = {
   },
 
   /* Delete a day. */
-  deleteDay: (req, res) => {
+  deleteDay: (req, res, next) => {
     const id = req.params.id;
-    Day
-    .findOneAndDelete(
-      { _id: id }
-    )
-    .then(() => {
-      Plan
-      .findOneAndUpdate( {days: { $in: id} },
-      { $pull: { days: id}}, function(err, data){
-        res.json(data)
-      });
-      // Fitness
-      // .deleteMany({dayID: id});
-      // Food
-      // .deleteMany({dayID: id});
-      Fitness
-      .remove({dayID: id});
-      Food
-      .remove({dayID: id});
-    })
-    .catch(err => {
-      res.json(err);
-    })
+    Promise.all([
+      Fitness.deleteMany({dayID: id}),
+      Food.deleteMany({dayID: id}),
+      Day.findOneAndDelete({_id: id}),
+      Plan.findOneAndUpdate(
+        {days: { $in: id} },
+        {$pull: { days: id}}
+      )
+    ]).then(([fit, food, day, plan]) => {
+      console.log(`Day ${day.day} is deleted.`);
+      res.sendStatus(200);
+    }).catch(e => next(e));
   },
 
   /* Get the last day (max day) of the plan */
