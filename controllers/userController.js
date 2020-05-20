@@ -1,4 +1,3 @@
-// import { User, Plan, Day, Fitness, Food } from "../models";
 const Models = require("../models/index");
 const UserModel = Models.UserModel;
 const Plan = Models.Plan;
@@ -65,18 +64,18 @@ const userController = {
 
   /* Delete a user(name). */
   deleteUser: (req, res) => {
-    UserModel
-      .findOneAndDelete(
-        { _id: req.params.id }
-      )
-      .then(dbUser => {
-        res.json(dbUser);
-      })
-      .catch(err => {
-        res.json(err);
-      })
-    }
+    const id = req.params.id;
+    Promise.all([
+      Fitness.deleteMany({userID: id}),
+      Food.deleteMany({userID: id}),
+      Day.deleteMany(({userID: id})),
+      Plan.deleteMany(({userID: id})),
+      UserModel.findOneAndDelete({_id: id})
+    ]).then(([fit, food, day, plan, user]) => {
+      console.log(`User: ${user.nickname} is deleted.`);
+      res.sendStatus(200);
+    }).catch(e => next(e));
+  }
 };
 
-// export default userController;
 module.exports = userController;

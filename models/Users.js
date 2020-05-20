@@ -66,15 +66,6 @@ const UsersSchema = new Schema({
   ]
 });
 
-// Not working...
-UsersSchema.pre("findOneAndDelete", function(next) {
-  Plan.deleteMany({userID: this._id}).exec();
-  Day.deleteMany({userID: this._id}).exec();
-  Fitness.deleteMany({userID: this._id}).exec();
-  Food.deleteMany({userID: this._id}).exec();
-  next();
-});
-
 UsersSchema.pre('save', async function(next){
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;

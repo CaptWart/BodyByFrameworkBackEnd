@@ -1,5 +1,6 @@
-// import mongoose from 'mongoose';
 const mongoose = require("mongoose");
+const Fitness = require("./Fitness");
+const Food = require("./Food");
 
 const Schema = mongoose.Schema;
 

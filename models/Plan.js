@@ -1,5 +1,3 @@
-// import mongoose from 'mongoose';
-// import { UserModel } from "../models";
 const mongoose = require('mongoose');
 const Models = require("../models/index");
 const UserModel = Models.UserModel;
@@ -20,28 +18,10 @@ const PlanSchema = new Schema(
     ],
     userID: {
       type: Schema.Types.ObjectId,
-      // ref: "User",
       required: "userID is required to be entered."
     }
   }
 );
-
-// PlanSchema.pre("findOneAndDelete", function(doc) {
-//   const planID = doc._id;
-//   User
-//       .find({ plans: { $in: [planID] } })
-//       .then((users) => {
-//         Promise.all(
-//           users.map(user =>
-//             User.findOneAndUpdate(
-//               user._id,
-//               { $pull: { roles: planID } },
-//               { new: true }
-//             )
-//           )
-//         )
-//       });
-// });
 
 const Plan = mongoose.model("Plan", PlanSchema);
 

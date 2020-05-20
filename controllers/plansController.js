@@ -1,6 +1,9 @@
 const Models = require("../models/index");
 const UserModel = Models.UserModel;
 const Plan = Models.Plan;
+const Day = Models.Day;
+const Fitness = Models.Fitness;
+const Food = Models.Food;
 
 const plansController = {
   /* Get all plans of a single user. */
@@ -92,20 +95,19 @@ const plansController = {
   /* Delete a plan(name). */
   deletePlan: (req, res) => {
     const id = req.params.id;
-    Plan
-    .findOneAndDelete(
-      { _id: id }
-    )
-    .then(() => {
-      UserModel
-      .findOneAndUpdate( {plans: { $in: id} },
-      { $pull: { plans: id}}, function(err, data){
-        res.json(data)
-      }) 
-    })
-    .catch(err => {
-      res.json(err);
-    })
+    Promise.all([
+      Fitness.deleteMany({planID: id}),
+      Food.deleteMany({planID: id}),
+      Day.deleteMany(({planID: id})),
+      Plan.findOneAndDelete({_id: id}),
+      UserModel.findOneAndUpdate( 
+        {plans: { $in: id} },
+        { $pull: { plans: id}}
+      )
+    ]).then(([fit, food, day, plan, user]) => {
+      console.log(`Plan: ${plan.name} is deleted.`);
+      res.sendStatus(200);
+    }).catch(e => next(e));
   }
 };
 
