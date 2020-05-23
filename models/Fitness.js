@@ -8,7 +8,10 @@ const FitnessSchema = new Schema(
       type: String,
       required: "Workout is required to be entered."
     },
-    // add type: strength or activity
+    type: {
+      type: String,
+      default: "strength"
+    },
     weight: {
       type: Number,
       default: 0
@@ -22,6 +25,10 @@ const FitnessSchema = new Schema(
       default: 0
     },
     time: {
+      type: Number,
+      default: 0
+    },
+    distance: {
       type: Number,
       default: 0
     },

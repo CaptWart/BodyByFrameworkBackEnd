@@ -61,6 +61,21 @@ const daysController = {
       })
   },
 
+  /* Update(PUT) a day(bodyWeight). */
+  updateDay: (req, res) => {
+    Day
+    .findOneAndUpdate(
+      { _id: req.params.id }, 
+      { bodyWeight: req.body.bodyWeight }
+    )
+    .then(dbDay => {
+      res.json(dbDay);
+    })
+    .catch(err => {
+      res.json(err);
+    })
+  },
+
   /* Delete a day. */
   deleteDay: (req, res, next) => {
     const id = req.params.id;
