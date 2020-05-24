@@ -10,6 +10,9 @@ const DaySchema = new Schema(
       type: Number,
       required: "Day is required to be entered."
     },
+    bodyWeight: {
+      type: Number
+    },
     fitnesses: [
       {
         type: Schema.Types.ObjectId,

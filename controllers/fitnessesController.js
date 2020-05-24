@@ -49,15 +49,17 @@ const fitnessesController = {
 
   /* Create(POST) a fitness. */
   createFitness: (req, res) => {
-    const {workout, weight, sets, reps, time, userID, planID, dayID} = req.body;
+    const {workout, type, weight, sets, reps, time, distance, userID, planID, dayID} = req.body;
     Fitness
       .create(
         {
           workout: workout,
+          type: type,
           weight: weight,
           sets: sets,
           reps: reps,
           time: time,
+          distance: distance,
           userID: userID,
           planID: planID,
           dayID: dayID
