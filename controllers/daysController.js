@@ -1,6 +1,8 @@
 const Models = require("../models/index");
 const Plan = Models.Plan;
 const Day = Models.Day;
+const Fitness = Models.Fitness;
+const Food = Models.Food;
 
 const daysController = {
   /* Get all Days of a single user. */
@@ -22,7 +24,6 @@ const daysController = {
   /* Get a single day. */
   getDay: (req, res) => {
     Day
-      // .findById(req.params.id)
       .findOne({
         _id: req.query._id
       })
@@ -60,28 +61,40 @@ const daysController = {
       })
   },
 
-  /* Delete a day. */
-  deleteDay: (req, res) => {
-    const id = req.params.id;
+  /* Update(PUT) a day(bodyWeight). */
+  updateDay: (req, res) => {
     Day
-    .findOneAndDelete(
-      { _id: id }
+    .findOneAndUpdate(
+      { _id: req.params.id }, 
+      { bodyWeight: req.body.bodyWeight }
     )
-    .then(() => {
-      Plan
-      .findOneAndUpdate( {days: { $in: id} },
-      { $pull: { days: id}}, function(err, data){
-        res.json(data)
-      }) 
+    .then(dbDay => {
+      res.json(dbDay);
     })
     .catch(err => {
       res.json(err);
     })
   },
 
+  /* Delete a day. */
+  deleteDay: (req, res, next) => {
+    const id = req.params.id;
+    Promise.all([
+      Fitness.deleteMany({dayID: id}),
+      Food.deleteMany({dayID: id}),
+      Day.findOneAndDelete({_id: id}),
+      Plan.findOneAndUpdate(
+        {days: { $in: id} },
+        {$pull: { days: id}}
+      )
+    ]).then(([fit, food, day, plan]) => {
+      console.log(`Day ${day.day} is deleted.`);
+      res.sendStatus(200);
+    }).catch(e => next(e));
+  },
+
   /* Get the last day (max day) of the plan */
   getLastDay: (req, res) => {
-    console.log("get last day!!");
     Day
       .find(
         {

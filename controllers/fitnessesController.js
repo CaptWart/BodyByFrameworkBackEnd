@@ -49,15 +49,17 @@ const fitnessesController = {
 
   /* Create(POST) a fitness. */
   createFitness: (req, res) => {
-    const {workout, weight, sets, reps, time, userID, planID, dayID} = req.body;
+    const {workout, type, weight, sets, reps, time, distance, userID, planID, dayID} = req.body;
     Fitness
       .create(
         {
           workout: workout,
+          type: type,
           weight: weight,
           sets: sets,
           reps: reps,
           time: time,
+          distance: distance,
           userID: userID,
           planID: planID,
           dayID: dayID
@@ -78,12 +80,12 @@ const fitnessesController = {
 
   /* Update(PUT) a fitness. */
   updateFitness: (req, res) => {
-    opts = { runValidators: true };
+    const opts = { runValidators: true };
     Fitness
     .findOneAndUpdate(
       { _id: req.params.id }, 
       req.body,
-      ops
+      opts
     )
     .then(dbFitness => {
       res.json(dbFitness);

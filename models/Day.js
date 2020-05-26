@@ -1,5 +1,6 @@
-// import mongoose from 'mongoose';
 const mongoose = require("mongoose");
+const Fitness = require("./Fitness");
+const Food = require("./Food");
 
 const Schema = mongoose.Schema;
 
@@ -8,6 +9,9 @@ const DaySchema = new Schema(
     day: {
       type: Number,
       required: "Day is required to be entered."
+    },
+    bodyWeight: {
+      type: Number
     },
     fitnesses: [
       {

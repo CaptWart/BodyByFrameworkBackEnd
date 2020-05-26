@@ -33,25 +33,27 @@ const UsersSchema = new Schema({
   email : {
     type : String,
     required : true,
-    unique : true
+    unique: true,
+    match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
   },
   nickname : {
     type : String,
-    required : true
+    required : true,
+    validate: [({ length }) => length <= 20, "Nickname must be less than 20 characters"]
   },
   password : {
     type : String,
-    required : true
+    required : true,
+    trim: true,
+    match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/, "Password not strong enough"]
   },
   ageCheck : {
     type: Boolean,
-    required : true,
-    default : false
+    required : true
   },
   policyCheck : {
     type: Boolean,
     required : true,
-    default : false
   },
   validEmail : {
     type: Boolean,
@@ -64,15 +66,6 @@ const UsersSchema = new Schema({
         ref: "Plan"
     } 
   ]
-});
-
-// Not working...
-UsersSchema.pre("findOneAndDelete", function(next) {
-  Plan.deleteMany({userID: this._id}).exec();
-  Day.deleteMany({userID: this._id}).exec();
-  Fitness.deleteMany({userID: this._id}).exec();
-  Food.deleteMany({userID: this._id}).exec();
-  next();
 });
 
 UsersSchema.pre('save', async function(next){

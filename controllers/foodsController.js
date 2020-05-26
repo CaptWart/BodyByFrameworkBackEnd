@@ -76,7 +76,7 @@ const foodsController = {
 
   /* Update(PUT) a food. */
   updateFood: (req, res) => {
-    opts = { runValidators: true };
+    const opts = { runValidators: true };
     Food
     .findOneAndUpdate(
       { _id: req.params.id }, 
