@@ -56,6 +56,9 @@ router.post('/createUser',  (req, res, next) => {
     if(res){
       return result.sendStatus(400)
     }
+    // else if(res == null){
+    //   return result.sendStatus(400)
+    // }
     else{
       const finalUser = new Users(user);
       finalUser.isValidPassword(user.password);
