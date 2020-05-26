@@ -15,11 +15,14 @@ dotenv.config();
 const nodemailer = require("nodemailer");
 
 const smtpTransport = nodemailer.createTransport({
-    service: "Gmail",
+  host: 'smtp.office365.com',
+  port: '587',
     auth: {
       user: process.env.sendEmail,
       pass: process.env.sendPassword
-    }
+    },
+    secureConnection: false,
+    tls: { ciphers: 'SSLv3' }
   });
 //   var rand,mailOptions,host,link;
 
