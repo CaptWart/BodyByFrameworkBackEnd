@@ -10,11 +10,14 @@ dotenv.config();
 const nodemailer = require("nodemailer");
 
 const smtpTransport = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
+    host: 'smtp.office365.com',
+    port: 587,
+      auth: {
         user: process.env.sendEmail,
         pass: process.env.sendPassword
-    }
+      },
+      secureConnection: false,
+      tls: { ciphers: 'SSLv3' }
   });
   var rand,mailOptions,host;
 
@@ -104,6 +107,7 @@ UsersSchema.methods.verifyEmail = function(){
   console.log("this: " + this._id)
   const link=process.env.frontendtest+"/verified?id="+this._id;
   mailOptions={
+      from: "support@bodybyframework.com",
       to : this.email,
       subject : "Please confirm your Email account",
       html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
