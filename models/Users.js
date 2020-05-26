@@ -33,25 +33,27 @@ const UsersSchema = new Schema({
   email : {
     type : String,
     required : true,
-    unique : true
+    unique: true,
+    match: [/.+@.+\..+/, "Please enter a valid e-mail address"]
   },
   nickname : {
     type : String,
-    required : true
+    required : true,
+    validate: [({ length }) => length <= 20, "Nickname must be less than 20 characters"]
   },
   password : {
     type : String,
-    required : true
+    required : true,
+    trim: true,
+    match: [/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/, "Password not strong enough"]
   },
   ageCheck : {
     type: Boolean,
-    required : true,
-    default : false
+    required : true
   },
   policyCheck : {
     type: Boolean,
     required : true,
-    default : false
   },
   validEmail : {
     type: Boolean,
@@ -99,7 +101,6 @@ UsersSchema.methods.toAuthJSON = function() {
 
 UsersSchema.methods.verifyEmail = function(){
 
-  console.log("this: " + this._id)
   link="http://localhost:3000/verified?id="+this._id;
   mailOptions={
       to : this.email,
