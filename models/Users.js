@@ -16,7 +16,7 @@ const smtpTransport = nodemailer.createTransport({
         pass: process.env.sendPassword
     }
   });
-  var rand,mailOptions,host,link;
+  var rand,mailOptions,host;
 
 
 const generateToken = (userData) => {
@@ -101,7 +101,8 @@ UsersSchema.methods.toAuthJSON = function() {
 
 UsersSchema.methods.verifyEmail = function(){
 
-  link="http://localhost:3000/verified?id="+this._id;
+  console.log("this: " + this._id)
+  const link=process.env.frontendtest+"/verified?id="+this._id;
   mailOptions={
       to : this.email,
       subject : "Please confirm your Email account",
@@ -113,7 +114,8 @@ UsersSchema.methods.verifyEmail = function(){
       res.end("error");
    }else{
           console.log("Message sent: " + response.message);
-      res.end("sent");
+      console.log(link)
+          res.end("sent");
        }
 })
 
