@@ -42,7 +42,7 @@ if(!isProduction) {
 }
 
 //Configure Mongoose
-mongoose.connect('mongodb+srv://bbftest:OiOzr6s6RYDqvGdQ@bbf-test-rmvkm.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect(process.env.mongodbtest, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 mongoose.connection.on('error', error => console.log(error) );
 mongoose.Promise = global.Promise;
 
