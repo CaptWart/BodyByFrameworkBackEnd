@@ -14,9 +14,9 @@ dotenv.config();
 
 const nodemailer = require("nodemailer");
 
-const smtpTransport = nodemailer.createTransport({
+const smtpTransport = nodemailer.createTransport( {
   host: 'smtp.office365.com',
-  port: '587',
+  port: 587,
     auth: {
       user: process.env.sendEmail,
       pass: process.env.sendPassword
@@ -174,6 +174,7 @@ router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
       console.log(token)
       link=process.env.frontendtest+"/forgotpasswordChange?token="+token;
       mailOptions={
+          from: "support@bodybyframework.com",
           to : userEmail,
           subject : "Body By Framework Password Reset",
           html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to reset</a>"
