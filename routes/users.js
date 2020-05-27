@@ -134,7 +134,6 @@ router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
     }
     else {
       const token = user.passwordReset()
-      console.log(token)
       link=process.env.frontendtest+"/forgotpasswordChange?token="+token;
       mailOptions={
           from: "support@bodybyframework.com",
@@ -142,10 +141,8 @@ router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
           subject : "Body By Framework Password Reset",
           html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to reset</a>"
       }
-      console.log(mailOptions);
       smtpTransport.sendMail(mailOptions, function(error, response){
        if(error){
-              console.log(error);
           res.end("error");
        }else{
           res.end("sent");
