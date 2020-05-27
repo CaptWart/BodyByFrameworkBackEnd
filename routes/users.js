@@ -3,6 +3,8 @@ const passport = require('passport');
 const router = require('express').Router();
 const auth = require('../middleware/auth');
 const Users = mongoose.model('Users');
+const smtpTransport = require('../middleware/smtp')
+
 require('../middleware/passport')
 
 const bcrypt = require('bcryptjs');
@@ -10,22 +12,6 @@ const bcrypt = require('bcryptjs');
 //POST new user route (optional, everyone has access)
 var dotenv = require('dotenv');
 dotenv.config();
-
-
-const nodemailer = require("nodemailer");
-
-const smtpTransport = nodemailer.createTransport( {
-  host: 'smtp.office365.com',
-  port: 587,
-    auth: {
-      user: process.env.sendEmail,
-      pass: process.env.sendPassword
-    },
-    secureConnection: false,
-    tls: { ciphers: 'SSLv3' }
-  });
-//   var rand,mailOptions,host,link;
-
 
 var express = require('express')
 var cors = require('cors')
@@ -60,9 +46,6 @@ router.post('/createUser',  (req, res, next) => {
     if(res){
       return result.sendStatus(400)
     }
-    // else if(res == null){
-    //   return result.sendStatus(400)
-    // }
     else{
       const finalUser = new Users(user);
       finalUser.isValidPassword(user.password);
@@ -141,26 +124,6 @@ router.get('/verifyEmail', (req, res, next) => {
     })
 })
 
-// router.get('/send', (req, res, next) => {
-//     host=req.get('host');
-//     link="http://"+req.get('host')+"/verify?id="+rand;
-//     mailOptions={
-//         to : req.query.email,
-//         subject : "Please confirm your Email account",
-//         html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
-//     }
-//     console.log(mailOptions);
-//     smtpTransport.sendMail(mailOptions, function(error, response){
-//      if(error){
-//             console.log(error);
-//         res.end("error");
-//      }else{
-//             console.log("Message sent: " + response.message);
-//         res.end("sent");
-//          }
-//   })
-// });
-
 // //encrypt token from email and send password link with token in header
 router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
   const userEmail = req.body.email;
@@ -185,7 +148,6 @@ router.post('/sendPasswordReset', cors(corsOptions), (req, res, next) => {
               console.log(error);
           res.end("error");
        }else{
-              console.log("Message sent: " + response.message);
           res.end("sent");
            }
        })

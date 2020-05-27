@@ -49,7 +49,7 @@ mongoose.Promise = global.Promise;
 
 //Models & routes
 require('./models/Users');
-app.use(require('./middleware'));
+app.use(require('./middleware/index.js'));
 app.use(require('./routes/users'));
 app.use('/api/users', apiUsersRouter);
 app.use("/api/plans", apiPlansRouter);
@@ -60,19 +60,6 @@ app.use("/api/foods", apiFoodsRouter);
 app.use(passport.initialize());
 app.use(passport.session());
 require('./middleware/passport');
-//Error handlers & middlewares
-if(!isProduction) {
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-
-    res.json({
-      errors: {
-        message: err.message,
-        error: err,
-      },
-    });
-  });
-}
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);

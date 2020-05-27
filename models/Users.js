@@ -2,25 +2,11 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
+const smtpTransport = require('../middleware/smtp')
 
 
 var dotenv = require('dotenv');
 dotenv.config();
-
-const nodemailer = require("nodemailer");
-
-const smtpTransport = nodemailer.createTransport({
-    host: 'smtp.office365.com',
-    port: 587,
-      auth: {
-        user: process.env.sendEmail,
-        pass: process.env.sendPassword
-      },
-      secureConnection: false,
-      tls: { ciphers: 'SSLv3' }
-  });
-  var rand,mailOptions,host;
-
 
 const generateToken = (userData) => {
   const today = new Date();
@@ -106,7 +92,7 @@ UsersSchema.methods.verifyEmail = function(){
 
   console.log("this: " + this._id)
   const link=process.env.frontendtest+"/verified?id="+this._id;
-  mailOptions={
+  let mailOptions={
       from: "support@bodybyframework.com",
       to : this.email,
       subject : "Please confirm your Email account",
@@ -114,16 +100,14 @@ UsersSchema.methods.verifyEmail = function(){
   }
   smtpTransport.sendMail(mailOptions, function(error, response){
    if(error){
-          console.log(error);
-      res.end("error");
-   }else{
-          console.log("Message sent: " + response.message);
-      console.log(link)
-          res.end("sent");
+        res.end("error");
+   }
+   else{
+        res.end("sent");
        }
 })
 
-  return console.log("endofverify")
+  return;
 };
 
 UsersSchema.methods.passwordReset = function(){
