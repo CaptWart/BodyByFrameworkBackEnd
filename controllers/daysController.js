@@ -88,7 +88,6 @@ const daysController = {
         {$pull: { days: id}}
       )
     ]).then(([fit, food, day, plan]) => {
-      console.log(`Day ${day.day} is deleted.`);
       res.sendStatus(200);
     }).catch(e => next(e));
   },
