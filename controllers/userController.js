@@ -60,21 +60,6 @@ const userController = {
       .catch(err => {
         res.json(err);
       })
-  },
-
-  /* Delete a user(name). */
-  deleteUser: (req, res) => {
-    const id = req.params.id;
-    Promise.all([
-      Fitness.deleteMany({userID: id}),
-      Food.deleteMany({userID: id}),
-      Day.deleteMany(({userID: id})),
-      Plan.deleteMany(({userID: id})),
-      UserModel.findOneAndDelete({_id: id})
-    ]).then(([fit, food, day, plan, user]) => {
-      console.log(`User: ${user.nickname} is deleted.`);
-      res.sendStatus(200);
-    }).catch(e => next(e));
   }
 };
 

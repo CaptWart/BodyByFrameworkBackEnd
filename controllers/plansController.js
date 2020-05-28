@@ -105,7 +105,6 @@ const plansController = {
         { $pull: { plans: id}}
       )
     ]).then(([fit, food, day, plan, user]) => {
-      console.log(`Plan: ${plan.name} is deleted.`);
       res.sendStatus(200);
     }).catch(e => next(e));
   }
