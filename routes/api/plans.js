@@ -2,13 +2,6 @@ const express = require("express");
 const router = express.Router();
 const plansController = require("../../controllers/plansController");
 
-var cors = require('cors')
-var app = express()
-// var corsOptions = {
-//   origin: 'http://localhost:3000',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
-
 /* GET all plans. Matches with "/api/plans" */
 // router.get('/', cors(corsOptions), plansController.getAllPlans);
 router.get('/', plansController.getAllPlans);
