@@ -11,7 +11,8 @@ const DaySchema = new Schema(
       required: "Day is required to be entered."
     },
     bodyWeight: {
-      type: Number
+      type: Number,
+      default: 0
     },
     fitnesses: [
       {
