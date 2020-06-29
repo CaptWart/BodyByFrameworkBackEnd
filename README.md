@@ -15,8 +15,8 @@ A platform for fitness content creators to create more content for their instagr
 ![BBF5](public/images/BBF5.png)
 
 ### Link
-[Click here to use BBF](https://bodybyframework.com/)
-[Front-End GitHub](https://github.com/CaptWart/BodyByFramework)
+* [Click here to use BBF](https://bodybyframework.com/)
+* [Front-End GitHub](https://github.com/CaptWart/BodyByFramework)
 
 ### Technologies
 Project is created with:
